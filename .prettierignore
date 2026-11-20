@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.cache/
+vendor/
+package-lock.json
+font-coverage.json
+assets/*.tex
+docs/media/

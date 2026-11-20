@@ -1,0 +1,1233 @@
+\begin{titlepage}
+\vspace*{22mm}
+{\Huge Probability\\[4mm] and Statistics\par}
+\vspace{8mm}
+{\Large A complete course companion\par}
+\vspace{10mm}
+From uncertain events to evidence-based conclusions.
+\vfill
+English study notes organised into ten units for an introductory
+probability and statistics course.
+
+The explanations,
+derivations and worked examples in these notes are original instructional
+material, not a transcription of lectures or the listed textbooks.
+\vspace{8mm}
+
+\textbf{How to study:} read the intuition, reproduce the derivation,
+cover the solution and redo the example, then answer the practice questions.
+\end{titlepage}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+\section*{Scope, prerequisites and notation}
+\addcontentsline{toc}{section}{Scope, prerequisites and notation}
+The ten units cover descriptive statistics, probability, distributions,
+estimation, hypothesis testing and regression. Inference for variances,
+chi-square tests of independence and $F$ distributions are included as well.
+
+This is an introductory course companion; it is
+not an encyclopedia of every branch of probability and statistics.
+Prerequisites are elementary algebra, derivatives, definite integrals,
+and the idea of a vector. When we differentiate a likelihood, we use
+$d\log x/dx=1/x$. When we integrate a density, we are measuring area.
+
+\textbf{Population versus sample.} A population is the collection or
+data-generating process we want to understand. A sample is what we observe.
+A parameter describes the population; a statistic is computed from a sample.
+Probability starts with a model and predicts data. Statistics starts with
+data and assesses what models or parameter values are plausible.
+
+\begin{center}
+\begin{tabular}{ll}
+$P(A)$ & probability of event $A$\\
+$X,\ x$ & random variable, observed value\\
+$\mu,\sigma^2$ & population mean, population variance\\
+$\bar X,\ S^2$ & random sample mean, sample variance\\
+$\bar x,\ s^2$ & their observed numerical values\\
+$\theta,\ \hat\theta$ & parameter, estimator or its estimate\\
+$F_X,\ f_X,\ p_X$ & CDF, density, probability mass function\\
+$q_p$ & lower-tail quantile: $P(W\leq q_p)=p$\\
+$\alpha$ & significance level; $1-\alpha$ is confidence level
+\end{tabular}
+\end{center}
+All quantiles in these notes are \emph{lower-tail} quantiles. Thus
+$z_{0.975}\approx1.96$ and $t_{0.975,9}\approx2.262$.
+Unless stated otherwise, a random sample means independent, identically
+distributed observations (i.i.d.). All numerical examples are illustrative.
+
+\clearpage
+\section{Week 1: data, description and probability}
+\subsection{Sampling and the questions data can answer}
+A \textbf{simple random sample} gives every subset of the prescribed size
+the same probability of selection. A \textbf{stratified sample} samples
+within meaningful groups; it can improve precision and representation.
+A \textbf{cluster sample} selects groups and observes units inside them;
+observations in one cluster may be correlated. A systematic sample takes
+every $k$th item after a random start; hidden periodicity can distort it.
+A convenience sample is easy to collect but may not represent the population.
+
+Random \emph{sampling} supports population generalization. Random
+\emph{assignment} of treatments helps distinguish treatment effects from
+confounding. An observational association alone does not establish causation.
+Increasing sample size reduces random sampling error, but does not remove
+selection bias, nonresponse bias, measurement error or confounding.
+
+A categorical variable records labels. A quantitative variable is discrete
+when its possible values are countable, and continuous when values range
+over intervals. A measurement recorded to two decimals may still model
+an underlying continuous quantity. Choose graphs accordingly: bar charts
+for categories, histograms and boxplots for quantitative distributions,
+scatterplots for two quantitative variables, and time plots for time order.
+For unequal-width histogram bins, use density heights so that areas, not
+heights alone, represent relative frequencies.
+
+\subsection{Location and spread}
+For observations $x_1,\ldots,x_n$,
+\[
+\bar x=\frac1n\sum_{i=1}^n x_i,\qquad
+s^2=\frac{\sum_{i=1}^n(x_i-\bar x)^2}{n-1},\qquad s=\sqrt{s^2}.
+\]
+The mean balances all observations and is sensitive to outliers. The median
+is the central ordered value (the average of the two central values for even
+$n$), and is more resistant. The mode is a most frequent value. The range is
+$\max x_i-\min x_i$; the interquartile range is $IQR=Q_3-Q_1$.
+Quartile conventions differ between software packages, especially for small
+samples; state the convention when it matters. A boxplot often flags values
+outside $[Q_1-1.5IQR,Q_3+1.5IQR]$. A flag is a reason to investigate, not an
+automatic reason to delete a measurement.
+
+Variance is in squared units; standard deviation is in the original units.
+The standardized value $z=(x-\bar x)/s$ describes distance from the sample
+mean in sample standard deviations. If every observation changes to
+$y_i=a+bx_i$, then $\bar y=a+b\bar x$ and $s_y=|b|s_x$.
+
+\textbf{Worked example.} For $2,4,4,6,9$, the sum is 25 and $\bar x=5$.
+The median is 4; squared deviations are $9,1,1,1,16$. Therefore
+$s^2=28/4=7$ and $s\approx2.646$. The larger last value pulls the mean above
+the median. Dividing by 5 would compute the variance of these five numbers
+as a complete finite population; dividing by 4 estimates a population
+variance from a sample. Unit 6 derives why $n-1$ appears.
+
+\subsection{Events and probability axioms}
+The sample space $\Omega$ contains possible outcomes. An event is a set of
+outcomes. The complement $A^c$ means ``not $A$'', the union $A\cup B$ means
+``$A$ or $B$ or both'', and the intersection $A\cap B$ means ``both''.
+Disjoint events have empty intersection. The axioms are
+\[
+P(A)\geq0,\qquad P(\Omega)=1,\qquad
+P\!\left(\bigcup_i A_i\right)=\sum_iP(A_i)
+\]
+for a countable sequence of pairwise disjoint events. They imply
+\[
+P(A^c)=1-P(A),\qquad
+P(A\cup B)=P(A)+P(B)-P(A\cap B).
+\]
+The subtraction corrects double counting of the overlap. More generally,
+$P(\bigcup_i A_i)\leq\sum_iP(A_i)$, the union bound.
+
+Only when elementary outcomes are equally likely may we use
+$P(A)=|A|/|\Omega|$. Counting formulas are tools for that model:
+\[
+n!=n(n-1)\cdots1,\quad
+P(n,r)=\frac{n!}{(n-r)!},\quad
+\binom nr=\frac{n!}{r!(n-r)!},\quad 0!=1.
+\]
+Use the product rule for successive choices. Use permutations when order
+matters and combinations when it does not. With replacement, $r$ ordered
+draws from $n$ possibilities have $n^r$ possible sequences.
+
+\textbf{Worked example.} Choose 3 components without replacement from
+10, of which 2 are defective. The probability of at least one defective is
+\[
+1-\frac{\binom83}{\binom{10}3}=1-\frac{56}{120}=\frac8{15}.
+\]
+The complement is simpler than splitting into exactly one and exactly two.
+
+\textbf{Model-building habit.} State the population, how the sample was
+obtained, what is random, and which outcomes are assumed equally likely.
+A correct calculation cannot rescue an unjustified sampling model.
+
+\clearpage
+\section{Week 2: conditional probability and Bayes' rule}
+\subsection{Conditioning changes the reference population}
+For $P(B)>0$, define
+\[
+P(A\mid B)=\frac{P(A\cap B)}{P(B)}.
+\]
+Once $B$ is known, we restrict attention to $B$ and renormalize its
+probability to one. Rearranging gives the multiplication rule
+$P(A\cap B)=P(B)P(A\mid B)$. For a sequence of events,
+\[
+P(A\cap B\cap C)=P(A)P(B\mid A)P(C\mid A\cap B).
+\]
+In a probability tree, multiply along a path and add across disjoint paths.
+Conditioning is not the same as intervention: knowing a patient received a
+treatment is different from randomly assigning the treatment.
+
+\subsection{Independence and common traps}
+Events $A$ and $B$ are independent if $P(A\cap B)=P(A)P(B)$.
+For $P(B)>0$, this is equivalent to $P(A\mid B)=P(A)$.
+Disjoint events with positive probabilities are \emph{not} independent:
+knowing one occurred rules out the other. Sampling without replacement
+usually introduces dependence. Replacing an item and remixing can justify
+independent draws when the experiment is otherwise unchanged.
+
+Pairwise independence of three events is weaker than mutual independence.
+For two fair independent coin tosses, let $A$ be ``first is heads'', $B$ be
+``second is heads'', and $C$ be ``the tosses match''. Each pair has
+intersection probability $1/4$, but
+$P(A\cap B\cap C)=1/4\ne(1/2)^3$. Mutual independence requires factorization
+for every subcollection, not just every pair.
+
+\textbf{Worked example.} Two draws without replacement from a bag with
+3 red and 2 blue balls give
+\[
+P(R_1\cap R_2)=\frac35\frac24=\frac3{10},\qquad
+P(R_2\mid R_1)=\frac12.
+\]
+With replacement the first probability would be $(3/5)^2=9/25$.
+
+\subsection{Total probability and Bayes' theorem}
+Let $B_1,\ldots,B_k$ be a partition: disjoint, exhaustive events with
+positive probabilities. Splitting event $A$ among the cases gives
+\[
+P(A)=\sum_{j=1}^k P(A\mid B_j)P(B_j).
+\]
+Substituting this into the conditional probability definition yields
+\[
+P(B_i\mid A)=
+\frac{P(A\mid B_i)P(B_i)}{\sum_jP(A\mid B_j)P(B_j)}.
+\]
+The prior $P(B_i)$ represents uncertainty before observing $A$;
+$P(A\mid B_i)$ is the likelihood of that observation under case $i$;
+the posterior $P(B_i\mid A)$ incorporates the observation.
+
+\textbf{Worked example: an automated alert.} Suppose 1\% of files are
+malicious. A detector flags 95\% of malicious files and 5\% of benign files.
+Then
+\[
+P(M\mid +)=\frac{0.95(0.01)}{0.95(0.01)+0.05(0.99)}
+=\frac{0.0095}{0.059}\approx0.1610.
+\]
+Among 10,000 files, the model expects 95 true alerts and 495 false alerts.
+Only $95/(95+495)$ of alerts are malicious. A high detection rate does not
+by itself imply a high posterior probability; the base rate matters.
+
+In odds form, Bayes' rule is
+\[
+\frac{P(M\mid+)}{P(M^c\mid+)}=
+\frac{P(M)}{P(M^c)}\frac{P(+\mid M)}{P(+\mid M^c)}.
+\]
+This separates prior odds from the likelihood ratio supplied by evidence.
+Do not reverse $P(A\mid B)$ and $P(B\mid A)$.
+
+\clearpage
+\section{Week 3: random variables and joint distributions}
+\subsection{PMFs, densities and cumulative distributions}
+A random variable maps each experimental outcome to a number. For a
+discrete $X$, the probability mass function (PMF) satisfies
+\[
+p_X(x)=P(X=x)\geq0,\qquad \sum_xp_X(x)=1.
+\]
+For an absolutely continuous $X$, a probability density (PDF) satisfies
+\[
+f_X(x)\geq0,\quad \int_{-\infty}^{\infty}f_X(x)\,dx=1,\quad
+P(a<X\leq b)=\int_a^b f_X(x)\,dx.
+\]
+A density can exceed 1: only its total area must be 1. At an individual
+point, $P(X=x)=0$, so endpoints do not affect interval probabilities for a
+continuous distribution. For a discrete variable, endpoints matter.
+
+The cumulative distribution function works in both cases:
+\[
+F_X(x)=P(X\leq x),\qquad P(a<X\leq b)=F_X(b)-F_X(a).
+\]
+It is nondecreasing, right-continuous, and has limits 0 and 1 at the two
+infinities. A PMF produces jumps; where a continuous CDF is differentiable,
+$f_X=F_X'$. For a general distribution,
+$P(X=x)=F_X(x)-F_X(x^-)$; mixed distributions may have both jumps and density.
+
+\textbf{Worked example.} Let $f(x)=cx$ for $0<x<2$, zero otherwise.
+Normalization gives $1=c\int_0^2x\,dx=2c$, hence $c=1/2$ and
+\[
+F(x)=\begin{cases}0,&x\leq0,\\x^2/4,&0<x<2,\\1,&x\geq2.\end{cases}
+\]
+Thus $P(1<X<1.5)=1.5^2/4-1/4=0.3125$. The median solves
+$F(m)=1/2$, so $m=\sqrt2$, not the midpoint 1.
+
+\subsection{Joint, marginal and conditional laws}
+For two discrete variables, $p_{X,Y}(x,y)=P(X=x,Y=y)$. Marginalize by
+summing over the variable you do not need:
+\[
+p_X(x)=\sum_y p_{X,Y}(x,y),\quad
+p_{X\mid Y}(x\mid y)=\frac{p_{X,Y}(x,y)}{p_Y(y)}.
+\]
+For continuous variables, replace sums with integrals:
+\[
+f_X(x)=\int_{-\infty}^{\infty} f_{X,Y}(x,y)\,dy,\quad
+f_{X\mid Y}(x\mid y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}
+\]
+when $f_Y(y)>0$. This density definition handles conditioning even though
+$P(Y=y)=0$. For an event region $R$,
+$P((X,Y)\in R)=\iint_R f_{X,Y}(x,y)\,dx\,dy$.
+Draw the support before choosing integration limits.
+
+Random variables are independent when their joint law factorizes into
+their marginal laws: $p_{X,Y}=p_Xp_Y$ or $f_{X,Y}=f_Xf_Y$ (almost everywhere).
+Equivalently, the joint CDF is $F_{X,Y}(x,y)=F_X(x)F_Y(y)$ for all $x,y$.
+
+\textbf{Worked example: triangular support.} Let $f_{X,Y}(x,y)=2$ on
+$0<x<y<1$. Its total integral is
+$\int_0^1\int_0^y2\,dx\,dy=1$. Therefore
+\[
+f_Y(y)=2y,\qquad f_X(x)=2(1-x),\qquad
+f_{X\mid Y}(x\mid y)=\frac1y\quad(0<x<y).
+\]
+Given $Y=y$, $X$ is uniform between 0 and $y$. The variables are dependent:
+the possible values of one are restricted by the other. Indeed,
+$P(X<Y/2\mid Y=y)=1/2$, hence $P(X<Y/2)=1/2$.
+
+\subsection{Transforming a random variable}
+The safest general method is to find $F_Y(y)=P(g(X)\leq y)$ and differentiate.
+If $g$ is one-to-one and differentiable with inverse $h$,
+\[
+f_Y(y)=f_X(h(y))|h'(y)|.
+\]
+The absolute derivative adjusts for stretching of the horizontal scale.
+For a non-one-to-one transformation, sum contributions from all inverse
+branches. If $X\sim U(0,1)$ and $Y=-\log X$, then for $y\geq0$,
+$F_Y(y)=P(X\geq e^{-y})=1-e^{-y}$, giving density $e^{-y}$.
+For independent continuous $X,Y$, the density of $Z=X+Y$ is the convolution
+$f_Z(z)=\int f_X(x)f_Y(z-x)\,dx$ over the permitted support.
+
+\clearpage
+\section{Week 4: expectation, variance and discrete models}
+\subsection{Expectation is a probability-weighted average}
+Provided the relevant absolute moment is finite,
+\[
+E[g(X)]=\sum_xg(x)p_X(x)\quad\hbox{or}\quad
+E[g(X)]=\int g(x)f_X(x)\,dx.
+\]
+Use this directly: you do not need the full distribution of $g(X)$ first.
+For a pair, use the joint PMF or density. Linearity gives
+$E[aX+bY+c]=aE[X]+bE[Y]+c$ even without independence.
+In general, $E[g(X)]\ne g(E[X])$.
+An indicator $I_A$ equals 1 on $A$ and 0 otherwise, so $E[I_A]=P(A)$.
+Breaking counts into indicators is often the easiest way to find a mean.
+
+Variance is the expected squared distance from the mean:
+\[
+\operatorname{Var}(X)=E[(X-\mu)^2]=E[X^2]-\mu^2,\qquad
+\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X).
+\]
+The identity follows by expanding $(X-\mu)^2$ and using $E[X]=\mu$.
+For the density $f(x)=x/2$ on $(0,2)$ from Unit 3,
+\[
+E[X]=\tfrac12\int_0^2x^2\,dx=\tfrac43,\quad
+E[X^2]=2,\quad \operatorname{Var}(X)=2-\tfrac{16}9=\tfrac29.
+\]
+
+\subsection{Covariance, correlation and sums}
+\[
+\operatorname{Cov}(X,Y)=E[(X-\mu_X)(Y-\mu_Y)]
+=E[XY]-E[X]E[Y].
+\]
+When both variances are positive, correlation is the dimensionless quantity
+$\rho=\operatorname{Cov}(X,Y)/(\sigma_X\sigma_Y)$, with $-1\leq\rho\leq1$.
+It measures linear association, not every kind of dependence.
+\[
+\operatorname{Var}\!\left(\sum_i a_iX_i\right)
+=\sum_i a_i^2\operatorname{Var}(X_i)
++2\sum_{i<j}a_ia_j\operatorname{Cov}(X_i,X_j).
+\]
+Independence implies zero covariance when moments exist. The reverse fails:
+if $X\sim U(-1,1)$ and $Y=X^2$, symmetry gives $E[X]=E[X^3]=0$, so covariance
+is zero, although $Y$ is determined by $X$.
+For independent $X,Y$, $\operatorname{Var}(X-Y)=\operatorname{Var}(X)+
+\operatorname{Var}(Y)$: the minus sign is squared.
+
+Conditional expectation averages over a conditional distribution. Two
+particularly useful identities are
+\[
+E[X]=E[E[X\mid Y]],
+\]
+\[
+\operatorname{Var}(X)=E[\operatorname{Var}(X\mid Y)]
++\operatorname{Var}(E[X\mid Y]).
+\]
+The second splits total variation into variation within groups and
+variation between group means. It follows by writing
+$X-E[X]=(X-E[X\mid Y])+(E[X\mid Y]-E[X])$; the cross term has expectation zero.
+
+\subsection{Markov and Chebyshev bounds}
+For nonnegative $X$ and $a>0$, $E[X]\geq aP(X\geq a)$, hence
+$P(X\geq a)\leq E[X]/a$ (Markov). Apply this to $(X-\mu)^2$:
+\[
+P(|X-\mu|\geq k\sigma)\leq\frac1{k^2}\quad(k>0,\ \sigma>0).
+\]
+This is Chebyshev's inequality. It requires finite variance but no bell
+shape. At least $8/9$ of probability lies within $3\sigma$ in the corresponding
+strict interval. For a normal model the coverage is about 99.73\%; do not
+confuse a distribution-free lower bound with a normal-model calculation.
+
+\subsection{Bernoulli and binomial}
+For one success/failure trial, $X\sim\operatorname{Bernoulli}(p)$ has
+$P(X=1)=p$, $P(X=0)=1-p$, $E[X]=p$, and variance $p(1-p)$ because $X^2=X$.
+For $n$ independent trials with the same success probability,
+\[
+X\sim\operatorname{Bin}(n,p),\qquad
+P(X=k)=\binom nk p^k(1-p)^{n-k},\quad k=0,\ldots,n.
+\]
+There are $\binom nk$ possible success positions, each with probability
+$p^k(1-p)^{n-k}$. Writing $X=\sum_{i=1}^n I_i$ proves
+$E[X]=np$ and $\operatorname{Var}(X)=np(1-p)$.
+
+\textbf{Worked example.} In 10 independent tests with failure probability
+0.1, the probability of exactly two failures is
+$\binom{10}2(0.1)^2(0.9)^8\approx0.19371$. The probability of at least one
+failure is $1-0.9^{10}\approx0.65132$. The expected number is 1, not a
+guarantee that every batch contains exactly one.
+
+\subsection{Poisson counts}
+For event counts in a fixed exposure,
+\[
+X\sim\operatorname{Pois}(\lambda),\qquad
+P(X=k)=e^{-\lambda}\frac{\lambda^k}{k!},\quad k=0,1,\ldots.
+\]
+Both mean and variance equal $\lambda$. For example,
+$E[X]=e^{-\lambda}\lambda\sum_{j\geq0}\lambda^j/j!=\lambda$;
+similarly $E[X(X-1)]=\lambda^2$, giving the variance.
+Independent Poisson counts add: rates add too. If a process has rate $r$
+per unit time, the count in length $t$ has mean $rt$ under the homogeneous
+Poisson-process assumptions of constant rate and independent increments.
+
+\textbf{Worked example.} At 3 requests per minute, the number in 20 seconds
+has $\lambda=1$. Thus $P(X\geq2)=1-e^{-1}(1+1)\approx0.26424$.
+The Poisson approximation to $\operatorname{Bin}(n,p)$ uses $\lambda=np$
+when $n$ is large and $p$ is small; it is an approximation, not an identity.
+
+\subsection{Related counting models}
+These supplementary models clarify when binomial assumptions fail.
+For sampling $n$ items without replacement from $N$ with $K$ successes,
+\[
+P(X=k)=\frac{\binom Kk\binom{N-K}{n-k}}{\binom Nn},\quad
+E[X]=n\frac KN,
+\]
+\[
+\operatorname{Var}(X)=n\frac KN\left(1-\frac KN\right)\frac{N-n}{N-1}.
+\]
+This is hypergeometric; only feasible $k$ values have nonzero probability.
+The final factor is the finite-population correction. For the trial number
+of the first success, a geometric variable on $1,2,\ldots$ has
+$P(X=k)=(1-p)^{k-1}p$, mean $1/p$, variance $(1-p)/p^2$.
+Some books count failures before the first success instead; state the support.
+
+\clearpage
+\section{Week 5: continuous models and the law of large numbers}
+\subsection{Uniform distributions}
+If all equal-length subintervals of $(a,b)$ have equal probability,
+\[
+X\sim U(a,b),\quad f(x)=\frac1{b-a},\quad
+E[X]=\frac{a+b}2,\quad \operatorname{Var}(X)=\frac{(b-a)^2}{12}.
+\]
+The CDF inside the interval is $(x-a)/(b-a)$. Symmetry gives the mean;
+integrating $(x-(a+b)/2)^2/(b-a)$ gives the variance.
+If a bus arrives uniformly between 0 and 12 minutes from now,
+$P(X>8)=4/12=1/3$ and the mean wait is 6 minutes.
+
+\subsection{Exponential waiting times}
+With \emph{rate} $\lambda>0$,
+\[
+f(x)=\lambda e^{-\lambda x},\quad F(x)=1-e^{-\lambda x},\quad x\geq0,
+\]
+\[
+E[X]=1/\lambda,\qquad \operatorname{Var}(X)=1/\lambda^2.
+\]
+The CDF is zero below 0. Some sources use a scale $\theta=1/\lambda$;
+check the parameterization before substituting numbers.
+Integration by parts derives $E[X]=1/\lambda$ and $E[X^2]=2/\lambda^2$.
+The survival function $S(t)=P(X>t)=e^{-\lambda t}$ gives
+\[
+P(X>s+t\mid X>s)=\frac{e^{-\lambda(s+t)}}{e^{-\lambda s}}
+=e^{-\lambda t}.
+\]
+This memoryless property describes a constant hazard, not aging or wear-out.
+In a homogeneous Poisson process, ``no arrival by $t$'' has probability
+$e^{-rt}$, so the first waiting time is exponential with rate $r$.
+At rate 2 per hour, the probability of waiting more than 45 minutes is
+$e^{-2(3/4)}=e^{-1.5}\approx0.22313$.
+
+\subsection{The normal distribution}
+\[
+X\sim N(\mu,\sigma^2),\quad
+f(x)=\frac1{\sigma\sqrt{2\pi}}
+\exp\!\left[-\frac{(x-\mu)^2}{2\sigma^2}\right],\quad \sigma>0.
+\]
+It is symmetric about $\mu$; the second parameter here is the variance.
+Standardize using $Z=(X-\mu)/\sigma\sim N(0,1)$. If $\Phi$ is the standard
+normal CDF,
+\[
+P(a<X<b)=\Phi((b-\mu)/\sigma)-\Phi((a-\mu)/\sigma).
+\]
+The CDF has no elementary antiderivative; use a table or numerical software.
+Symmetry gives $\Phi(-z)=1-\Phi(z)$. About 68.27\%, 95.45\%, and 99.73\%
+lie within one, two, and three standard deviations.
+
+\textbf{Worked example.} If a dimension $X\sim N(100,15^2)$, then
+$P(X>130)=1-\Phi(2)\approx0.02275$. Its 90th percentile is
+$100+15z_{0.90}\approx119.22$.
+An affine transform of a normal variable is normal. A linear combination
+of independent normal variables is normal, with mean and variance obtained
+from Unit 4. Normal marginals alone do not ensure that every combination is
+normal unless appropriate joint normality holds.
+
+For $X\sim\operatorname{Bin}(n,p)$, a normal approximation uses mean $np$
+and variance $np(1-p)$ when both expected successes and failures are
+sufficiently large. A useful screening guideline is both at least 10;
+extreme tails may still be inaccurate. Apply a continuity correction:
+\[
+P(X\leq k)\approx
+\Phi\!\left(\frac{k+0.5-np}{\sqrt{np(1-p)}}\right).
+\]
+The half-unit correction matches the continuous area to integer-valued bins.
+
+\subsection{Law of large numbers (LLN)}
+For i.i.d. observations with finite mean $\mu$, the weak LLN says
+$\bar X_n\xrightarrow{P}\mu$: for every $\varepsilon>0$,
+$P(|\bar X_n-\mu|>\varepsilon)\to0$.
+Under the stronger finite-variance assumption, a short proof is
+\[
+E[\bar X_n]=\mu,\quad \operatorname{Var}(\bar X_n)=\sigma^2/n,
+\quad P(|\bar X_n-\mu|\geq\varepsilon)
+\leq\frac{\sigma^2}{n\varepsilon^2}\to0.
+\]
+The LLN explains why averages and relative frequencies stabilize. It does
+not say individual observations approach the mean, and it does not say a
+run of heads makes tails more likely next. Under independence, each next
+coin toss retains its original probability. Unit 6's central limit theorem
+adds an approximate \emph{shape and scale} for the remaining error.
+
+\clearpage
+\section{Week 6: sampling distributions and the CLT}
+\subsection{A statistic has its own distribution}
+Before data are collected, $\bar X$, $S^2$ and $\hat p$ are random variables.
+Their sampling distributions describe repeated samples obtained using the
+same design. A histogram of individual observations estimates a population
+distribution; a histogram of averages from many repeated samples estimates
+the sampling distribution of the mean. These are different objects.
+
+If $X_1,\ldots,X_n$ are i.i.d. with mean $\mu$ and variance $\sigma^2$,
+\[
+E[\bar X]=\mu,\qquad \operatorname{Var}(\bar X)=\frac{\sigma^2}{n},
+\qquad \operatorname{SD}(\bar X)=\frac{\sigma}{\sqrt n}.
+\]
+The standard deviation of an estimator is its \textbf{standard error} (SE).
+The estimated SE of the mean is $s/\sqrt n$. Increasing $n$ by a factor of
+four halves the SE; doubling $n$ does not halve it. For simple random
+sampling without replacement from a finite population, the corresponding
+SE includes a finite-population correction, with its exact form depending
+on the convention used for population variance.
+
+\subsection{Central limit theorem}
+For i.i.d. observations with finite mean and finite positive variance,
+\[
+\frac{\bar X-\mu}{\sigma/\sqrt n}
+\xrightarrow{d}N(0,1).
+\]
+Thus for large enough $n$, $\bar X\approx N(\mu,\sigma^2/n)$, and
+$\sum_i X_i\approx N(n\mu,n\sigma^2)$. If the observations are themselves
+normal, these distributions are exact for every $n$.
+There is no universal ``$n\geq30$ makes everything normal'' rule: skewness,
+heavy tails, rare events and dependence affect approximation quality.
+An infinite-variance distribution need not obey this version of the CLT.
+Dependence requires different conditions and often a different SE.
+
+\textbf{Worked example.} A process has mean 50 and SD 12. For 36 independent
+observations, the sample mean has SE 2. The CLT approximation is
+\[
+P(\bar X>54)\approx P(Z>2)=0.02275.
+\]
+For normal observations this is exact up to numerical rounding. Using 12
+instead of 2 in the denominator would answer a different question about a
+single observation.
+
+For Bernoulli observations, $\hat p=X/n$ with $X\sim\operatorname{Bin}(n,p)$:
+$E[\hat p]=p$ and $\operatorname{Var}(\hat p)=p(1-p)/n$. This connects
+binomial probabilities with approximate proportion inference.
+
+\subsection{Why sample variance divides by $n-1$}
+The algebraic identity
+\[
+\sum_i(X_i-\bar X)^2=\sum_i(X_i-\mu)^2-n(\bar X-\mu)^2
+\]
+gives expected numerator $n\sigma^2-n(\sigma^2/n)=(n-1)\sigma^2$.
+Therefore $S^2=\sum_i(X_i-\bar X)^2/(n-1)$ is unbiased for $\sigma^2$.
+Estimating the mean uses one degree of freedom: the residuals sum to zero,
+so only $n-1$ can vary freely. Unbiasedness of $S^2$ does not imply that
+$S=\sqrt{S^2}$ is unbiased for $\sigma$.
+
+\subsection{Chi-square, Student's t and F}
+If $Z_1,\ldots,Z_\nu$ are independent standard normals, then
+$V=\sum_iZ_i^2\sim\chi^2_\nu$. It has mean $\nu$, variance $2\nu$ and
+nonnegative support. It is right-skewed for small $\nu$.
+For a normal random sample,
+\[
+\frac{(n-1)S^2}{\sigma^2}\sim\chi^2_{n-1},\qquad
+\bar X\ \text{and}\ S^2\ \text{are independent}.
+\]
+These exact results require normality. Unbiasedness of $S^2$ alone does not.
+
+If $Z\sim N(0,1)$ and $V\sim\chi^2_\nu$ are independent,
+\[
+T=\frac{Z}{\sqrt{V/\nu}}\sim t_\nu.
+\]
+The $t$ distribution is symmetric with heavier tails than a normal. Its
+tails account for uncertainty from estimating $\sigma$. As $\nu$ increases,
+it approaches the standard normal. In a normal random sample,
+$T=(\bar X-\mu)/(S/\sqrt n)\sim t_{n-1}$.
+
+For independent $U\sim\chi^2_{\nu_1}$ and $V\sim\chi^2_{\nu_2}$,
+\[
+F=\frac{U/\nu_1}{V/\nu_2}\sim F_{\nu_1,\nu_2}.
+\]
+It is positive and generally right-skewed; numerator and denominator
+degrees of freedom have different roles. Also $T_\nu^2\sim F_{1,\nu}$.
+These distributions support variance inference and regression tests.
+
+\clearpage
+\section{Week 7: estimation and confidence intervals}
+\subsection{What makes an estimator useful?}
+An estimator $\hat\theta$ is a rule based on sample data. Its bias is
+$E[\hat\theta]-\theta$. Its mean squared error decomposes as
+\[
+\operatorname{MSE}(\hat\theta)
+=\operatorname{Var}(\hat\theta)+\operatorname{Bias}(\hat\theta)^2.
+\]
+Unbiasedness is useful but not sufficient: a slightly biased estimator may
+have much smaller variance and MSE. Consistency means
+$\hat\theta_n\xrightarrow{P}\theta$. Precision concerns sampling variability;
+accuracy also depends on bias and model validity.
+
+\subsection{Maximum likelihood estimation (MLE)}
+For i.i.d. data with model $f(x;\theta)$,
+\[
+L(\theta;x_1,\ldots,x_n)=\prod_{i=1}^nf(x_i;\theta),\qquad
+\ell(\theta)=\sum_i\log f(x_i;\theta).
+\]
+For discrete data replace density by PMF. Data are fixed when maximizing;
+the parameter varies. A likelihood is not a probability distribution over
+parameter values. Logarithms preserve the maximizer and turn products into
+sums. Find stationary points, check curvature and admissible boundaries,
+and consider whether support depends on the parameter.
+
+\textbf{Bernoulli derivation.} Let $k=\sum_i x_i$. Then
+\[
+\ell(p)=k\log p+(n-k)\log(1-p),\qquad
+\ell'(p)=\frac kp-\frac{n-k}{1-p}.
+\]
+Solving gives $\hat p=k/n$; the second derivative is negative at an interior
+solution. If $k=0$ or $k=n$, the maximum is at the corresponding boundary.
+
+\textbf{Exponential derivation.} For a rate $\lambda$,
+$\ell(\lambda)=n\log\lambda-\lambda\sum_i x_i$; differentiating gives
+$\hat\lambda=n/\sum_i x_i=1/\bar x$ when the sum is positive.
+The MLE need not be unbiased: for $n>1$,
+$E[\hat\lambda]=n\lambda/(n-1)$ in this model.
+
+For normal data with both parameters unknown,
+\[
+\ell(\mu,\sigma^2)=-\frac n2\log(2\pi\sigma^2)
+-\frac1{2\sigma^2}\sum_i(x_i-\mu)^2.
+\]
+Differentiation gives $\hat\mu=\bar x$ and
+$\hat\sigma^2_{\rm MLE}=\sum_i(x_i-\bar x)^2/n$.
+The MLE variance divides by $n$; the unbiased sample variance divides by
+$n-1$. They answer different optimization or estimation criteria.
+
+As a boundary example, if $X_i\sim U(0,\theta)$, then
+$L(\theta)=\theta^{-n}1\{\theta\geq\max_i x_i\}$, so
+$\hat\theta=\max_i x_i$. Blindly setting a derivative to zero would miss it.
+
+\subsection{Confidence is a property of a procedure}
+A $100(1-\alpha)\%$ confidence interval is a random interval constructed so
+that, under the assumed sampling model, it covers the fixed parameter in
+$100(1-\alpha)\%$ of repeated samples (exactly or approximately).
+After observing the data, the resulting interval either contains the
+parameter or does not. A frequentist 95\% interval does not assign a 95\%
+posterior probability to the fixed parameter; that requires a Bayesian
+model and prior. It also does not describe the middle 95\% of observations.
+
+A general construction is estimate $\pm$ critical value $\times$ SE.
+More confidence makes the interval wider. More data generally make it
+narrower. These intervals do not correct sampling bias.
+
+\subsection{Intervals for a mean}
+If $\sigma$ is known and sampling is normal (or a CLT is adequate),
+\[
+\bar x\pm z_{1-\alpha/2}\frac{\sigma}{\sqrt n}.
+\]
+If $\sigma$ is unknown and data are normal,
+\[
+\bar x\pm t_{1-\alpha/2,n-1}\frac{s}{\sqrt n}.
+\]
+For large samples the latter is often a good approximation beyond exact
+normality; small samples with strong skew or outliers need more care.
+Both follow by inverting the central probability statement for the pivot.
+
+\textbf{Worked example.} Suppose $n=16$, $\bar x=52$, $s=8$. A 95\% normal-model
+interval for $\mu$ is
+\[
+52\pm t_{0.975,15}\frac8{4}=52\pm2.13145(2)
+\approx[47.737,56.263].
+\]
+The half-width is 4.263, while the sample SD is 8; they measure different
+things. With known/planning SD $\sigma$ and desired half-width $E$, choose
+$n\geq(z_{1-\alpha/2}\sigma/E)^2$ and round up. A planning SD is an assumption,
+not something known from the sample size formula itself.
+
+\subsection{Intervals for a Bernoulli proportion}
+The familiar Wald interval is
+\[
+\hat p\pm z_{1-\alpha/2}\sqrt{\frac{\hat p(1-\hat p)}n}.
+\]
+It can have poor coverage for small samples or proportions near 0 or 1,
+and can extend beyond $[0,1]$. A more reliable general-purpose alternative
+is the Wilson interval. Write $z=z_{1-\alpha/2}$; its center and half-width are
+\[
+c=\frac{\hat p+z^2/(2n)}{1+z^2/n},\qquad
+h=\frac{z}{1+z^2/n}
+\sqrt{\frac{\hat p(1-\hat p)}n+\frac{z^2}{4n^2}}.
+\]
+Report $[c-h,c+h]$. It comes from inverting the score test, whose standard
+error uses the hypothesized $p$, rather than freezing it at $\hat p$.
+For 60 successes in 100 trials, a 95\% Wilson interval is approximately
+$[0.502,0.691]$; the Wald interval is approximately $[0.504,0.696]$.
+For planning, $n\geq z^2p_*(1-p_*)/E^2$ with an anticipated $p_*$;
+use $p_*=1/2$ when no credible prior estimate is available.
+
+\subsection{Intervals for variance and a variance ratio}
+For normal data, invert the chi-square pivot to obtain
+\[
+\left[\frac{(n-1)s^2}{\chi^2_{1-\alpha/2,n-1}},
+\frac{(n-1)s^2}{\chi^2_{\alpha/2,n-1}}\right].
+\]
+The larger quantile goes in the lower endpoint's denominator. Square-root
+the endpoints for a confidence interval for $\sigma$.
+For $n=10$ and $s^2=4$, using quantiles $19.023$ and $2.700$ gives a 95\%
+variance interval about $[1.892,13.333]$, which is asymmetric.
+
+For independent normal samples, an interval for $\sigma_1^2/\sigma_2^2$ is
+\[
+\left[\frac{s_1^2/s_2^2}{F_{1-\alpha/2,n_1-1,n_2-1}},
+\frac{s_1^2/s_2^2}{F_{\alpha/2,n_1-1,n_2-1}}\right].
+\]
+These variance procedures are sensitive to departures from normality.
+
+\clearpage
+\section{Week 8: hypothesis testing}
+\subsection{The logic of a test}
+Specify a null hypothesis $H_0$ and an alternative $H_1$ before inspecting
+the result. A test statistic measures discrepancy from $H_0$ relative to
+its sampling variation. The \textbf{p-value} is the probability, assuming
+$H_0$ and its model assumptions, of a statistic at least as incompatible
+with $H_0$ as the observed one, according to the stated alternative.
+It is not $P(H_0\mid\text{data})$, and it is not the probability that the
+result was ``due to chance''.
+
+Choose a significance level $\alpha$, calculate the statistic and p-value,
+and reject if $p\leq\alpha$. Otherwise, \emph{fail to reject}; this does not
+prove equality. Report the estimated effect, interval, sample size and
+assumptions as well as the decision. Statistical significance is not the
+same as scientific or practical importance.
+
+A Type I error rejects a true null. A level-$\alpha$ procedure controls its
+probability at at most $\alpha$ under the null. A Type II error fails to reject
+a false null; its probability $\beta$ depends on the actual alternative.
+Power is $1-\beta$. Larger samples and larger true effects generally improve
+power; lowering $\alpha$ at fixed sample size generally reduces power.
+
+For a two-sided test of a scalar parameter, a matching equal-tail
+$1-\alpha$ confidence interval excludes the null value exactly when that
+test rejects (when constructed from the same procedure).
+Repeated testing or selecting hypotheses after looking at the data changes
+error rates. A Bonferroni adjustment uses $\alpha/m$ for each of $m$ tests
+to control family-wise Type I error at at most $\alpha$.
+
+\subsection{One normal population mean}
+For $H_0:\mu=\mu_0$, known $\sigma$ gives
+$Z=(\bar X-\mu_0)/(\sigma/\sqrt n)$, standard normal under $H_0$ for normal
+data. For unknown $\sigma$, use
+\[
+T=\frac{\bar X-\mu_0}{S/\sqrt n}\sim t_{n-1}\quad\text{under }H_0.
+\]
+For $H_1:\mu\ne\mu_0$, $p=2[1-F_t(|t_{\rm obs}|)]$.
+For $H_1:\mu>\mu_0$, $p=1-F_t(t_{\rm obs})$; for a lower alternative,
+$p=F_t(t_{\rm obs})$. Do not halve a two-sided p-value after seeing the sign
+unless the directional alternative was genuinely specified beforehand.
+
+\textbf{Worked example.} With $n=25$, $\bar x=105$, $s=10$, test $\mu=100$
+against $\mu\ne100$. Then $t=5/(10/5)=2.5$ with 24 degrees of freedom.
+The two-sided p-value is about 0.0197; reject at 0.05. The matching 95\%
+interval is $105\pm2.0639(2)=[100.872,109.128]$.
+This supports a nonzero difference under the model; its practical relevance
+depends on the units and application.
+
+\subsection{Two independent means: Welch and pooled tests}
+For independent groups and $H_0:\mu_1-\mu_2=\Delta_0$, the Welch statistic is
+\[
+t=\frac{\bar x_1-\bar x_2-\Delta_0}
+{\sqrt{s_1^2/n_1+s_2^2/n_2}},
+\]
+with approximate degrees of freedom
+\[
+\nu=\frac{(s_1^2/n_1+s_2^2/n_2)^2}
+{(s_1^2/n_1)^2/(n_1-1)+(s_2^2/n_2)^2/(n_2-1)}.
+\]
+A matching interval uses difference $\pm t_{1-\alpha/2,\nu}$ times that SE.
+Welch does not assume equal population variances. Normality gives its usual
+small-sample rationale; large samples permit broader approximations.
+
+If equal variances are justified, the pooled estimate and SE are
+\[
+s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2},\qquad
+SE=s_p\sqrt{1/n_1+1/n_2},
+\]
+and the normal-model test has $n_1+n_2-2$ degrees of freedom.
+Do not pool merely because a preliminary variance test was not significant.
+
+\textbf{Worked example.} Let $n_1=20,\bar x_1=12,s_1=3$ and
+$n_2=25,\bar x_2=10,s_2=4$. Under $\Delta_0=0$,
+$SE=\sqrt{9/20+16/25}=\sqrt{1.09}\approx1.0440$,
+$t\approx1.9157$ and $\nu\approx42.85$. The two-sided p-value is about
+0.062. At 5\%, fail to reject. This does not establish that the means are equal.
+
+\subsection{Paired observations}
+For before/after data on the same subjects, or intentionally matched pairs,
+define differences $D_i=X_i-Y_i$ and perform a one-sample test:
+\[
+t=\frac{\bar d-\Delta_0}{s_d/\sqrt n},\qquad df=n-1.
+\]
+Different pairs must be independent; within each pair dependence is expected.
+Use the SD of the \emph{differences}, not the two group SDs as though groups
+were independent. Pairing can substantially reduce variability if it is
+scientifically meaningful. Choose a consistent subtraction order.
+
+\subsection{Proportion and variance tests}
+For $H_0:p=p_0$, a large-sample score statistic is
+\[
+z=\frac{\hat p-p_0}{\sqrt{p_0(1-p_0)/n}}.
+\]
+The null value belongs in its denominator. If expected counts are small,
+use binomial probabilities for an exact procedure, specifying the convention
+for a two-sided exact p-value. For two independent proportions under equality,
+pool under the null: $\tilde p=(x_1+x_2)/(n_1+n_2)$ and
+\[
+z=\frac{\hat p_1-\hat p_2}
+{\sqrt{\tilde p(1-\tilde p)(1/n_1+1/n_2)}}.
+\]
+An ordinary difference interval instead uses the unpooled estimated SE.
+
+For normal observations and $H_0:\sigma^2=\sigma_0^2$, use
+$Q=(n-1)S^2/\sigma_0^2\sim\chi^2_{n-1}$ under the null. A two-sided
+equal-tail test rejects in either tail, with $\alpha/2$ in each.
+For independent normal samples under equal variances,
+$F=S_1^2/S_2^2\sim F_{n_1-1,n_2-1}$. Keep the stated ordering and use both
+appropriate quantiles for a two-sided test.
+
+\subsection{Chi-square tests for categorical counts}
+For a goodness-of-fit test with observed counts $O_i$ and expected counts
+$E_i=np_i$ under a specified categorical model,
+\[
+X^2=\sum_{i=1}^k\frac{(O_i-E_i)^2}{E_i}.
+\]
+Under suitable large-count conditions, compare to $\chi^2_{k-1}$ if all
+category probabilities are specified in advance. If $m$ parameters are
+estimated from these counts, the usual regular-model adjustment is
+$df=k-1-m$. All expected counts must be positive. Small expected counts
+can invalidate the approximation; use an appropriate exact or simulation
+method, or scientifically justified category grouping.
+
+For an $r\times c$ contingency table, independence predicts
+\[
+E_{ij}=\frac{(\text{row }i\text{ total})(\text{column }j\text{ total})}{n},
+\quad X^2=\sum_{i,j}\frac{(O_{ij}-E_{ij})^2}{E_{ij}},
+\quad df=(r-1)(c-1).
+\]
+Reject for a large statistic; the p-value is the upper chi-square tail.
+Observations must be independent and each belongs to one cell. The
+approximation is about expected counts, not observed counts alone.
+
+\textbf{Worked example.} Two groups of 50 have pass/fail counts
+$(30,20)$ and $(20,30)$. Under independence all four expected counts are 25.
+Therefore $X^2=4(5^2/25)=4$, $df=1$, and the uncorrected Pearson p-value is
+about 0.0455. At 5\% the data indicate an association. This calculation uses
+no continuity correction; a corrected or exact test may give a different
+p-value. Association does not by itself establish a causal group effect.
+
+\subsection{A simple power calculation}
+For a one-sided known-$\sigma$ test of $\mu=\mu_0$ versus $\mu>\mu_0$, reject
+when $\bar X>\mu_0+z_{1-\alpha}\sigma/\sqrt n$.
+At a true value $\mu_1$, normal-model power is
+\[
+1-\Phi\left(z_{1-\alpha}-\frac{\mu_1-\mu_0}{\sigma/\sqrt n}\right).
+\]
+For $\alpha=0.05$, $\sigma=10$, $n=25$ and $\mu_1-\mu_0=5$, power is
+$1-\Phi(1.645-2.5)\approx0.804$. Planning power requires an effect size you
+want to detect; there is no single power value for all alternatives.
+
+\clearpage
+\section{Week 9: simple linear regression}
+\subsection{The model and what its coefficients mean}
+For observations $(x_i,y_i)$, a simple linear regression model is
+\[
+Y_i=\beta_0+\beta_1x_i+\varepsilon_i,\qquad E[\varepsilon_i\mid x_i]=0.
+\]
+The conditional mean is $E[Y_i\mid x_i]=\beta_0+\beta_1x_i$. The slope is
+the change in mean response per unit increase in $x$. The intercept is
+the mean response at $x=0$; it may have little substantive meaning if zero
+is outside the observed range. Errors describe departures from the unknown
+population line; residuals $e_i=y_i-\hat y_i$ are computed after fitting.
+
+For standard least-squares SE formulas assume uncorrelated errors with
+constant variance $\sigma^2$. For exact small-sample $t$ and $F$ inference,
+assume independent normal errors as well. Normality is not needed merely
+to compute the line or for unbiasedness under the conditional mean model.
+
+\subsection{Deriving the least-squares line}
+Minimize $SSE(b_0,b_1)=\sum_i(y_i-b_0-b_1x_i)^2$.
+Setting its two partial derivatives to zero produces the normal equations:
+\[
+\sum_i(y_i-b_0-b_1x_i)=0,\quad
+\sum_i x_i(y_i-b_0-b_1x_i)=0.
+\]
+Define $S_{xx}=\sum_i(x_i-\bar x)^2$ and
+$S_{xy}=\sum_i(x_i-\bar x)(y_i-\bar y)$. When $S_{xx}>0$,
+\[
+\hat\beta_1=\frac{S_{xy}}{S_{xx}},\qquad
+\hat\beta_0=\bar y-\hat\beta_1\bar x,\qquad
+\hat y_i=\hat\beta_0+\hat\beta_1x_i.
+\]
+The fitted line passes through $(\bar x,\bar y)$, and with an intercept
+$\sum_i e_i=0$ and $\sum_i x_i e_i=0$. These are properties of the fit,
+not evidence that the model is correct.
+
+\subsection{Estimator properties and inference}
+Because $\hat\beta_1=\sum_i(x_i-\bar x)Y_i/S_{xx}$ is a linear combination,
+conditional mean zero errors give $E[\hat\beta_1]=\beta_1$. With uncorrelated,
+equal-variance errors,
+\[
+\operatorname{Var}(\hat\beta_1)=\frac{\sigma^2}{S_{xx}},\qquad
+\operatorname{Var}(\hat\beta_0)=\sigma^2\left(\frac1n+\frac{\bar x^2}{S_{xx}}\right),
+\]
+\[
+\operatorname{Cov}(\hat\beta_0,\hat\beta_1)=-\frac{\sigma^2\bar x}{S_{xx}}.
+\]
+Under the Gauss--Markov assumptions, ordinary least squares is best
+(minimum variance) among linear unbiased estimators. This claim does not
+compare it to every possible biased or nonlinear estimator.
+
+Estimate noise variance using $s^2=SSE/(n-2)$, because two coefficients have
+been estimated. Then $SE(\hat\beta_1)=s/\sqrt{S_{xx}}$. Under the normal model,
+\[
+\frac{\hat\beta_1-\beta_{1,0}}{s/\sqrt{S_{xx}}}\sim t_{n-2}
+\quad\text{under }H_0:\beta_1=\beta_{1,0}.
+\]
+A slope interval is $\hat\beta_1\pm t_{1-\alpha/2,n-2}s/\sqrt{S_{xx}}$.
+An intercept interval uses its SE from the preceding variance formula.
+
+\subsection{Explained variation and correlation}
+Define $SST=\sum_i(y_i-\bar y)^2$ and
+$SSR=\sum_i(\hat y_i-\bar y)^2$. With an intercept,
+$SST=SSR+SSE$ and $R^2=1-SSE/SST$ when $SST>0$.
+The value describes the fraction of observed response variation explained
+by this fitted line. It does not prove causality or guarantee accurate
+predictions on new data.
+
+Pearson's sample correlation is $r=S_{xy}/\sqrt{S_{xx}S_{yy}}$.
+In simple regression with an intercept, $R^2=r^2$ and
+$\hat\beta_1=r(s_y/s_x)$. A normal-model test of zero slope is equivalent
+to $F=(SSR/1)/(SSE/(n-2))$ with degrees of freedom $(1,n-2)$; $F=t^2$.
+For i.i.d. bivariate normal data, a zero-correlation test uses
+$t=r\sqrt{(n-2)/(1-r^2)}$ with $n-2$ degrees of freedom.
+
+\subsection{Worked example from raw data}
+Take $x=(1,2,3,4,5)$ and $y=(2,4,5,4,5)$. Then
+$\bar x=3$, $\bar y=4$, $S_{xx}=10$, $S_{xy}=6$, and $S_{yy}=6$.
+Hence $\hat\beta_1=0.6$, $\hat\beta_0=2.2$, and predictions are
+$(2.8,3.4,4.0,4.6,5.2)$. Residuals are
+$(-0.8,0.6,1.0,-0.6,-0.2)$, whose squares sum to 2.4.
+Thus $s^2=2.4/3=0.8$, $R^2=1-2.4/6=0.6$, and
+$r=\sqrt{0.6}\approx0.7746$.
+
+The slope SE is $\sqrt{0.8/10}\approx0.28284$, giving
+$t=0.6/0.28284\approx2.1213$ with only 3 degrees of freedom.
+The 95\% slope interval is
+$0.6\pm3.18245(0.28284)\approx[-0.300,1.500]$.
+Despite $R^2=0.6$, this small sample gives substantial slope uncertainty.
+
+\clearpage
+\section{Week 10: diagnostics, prediction and validation}
+\subsection{Residuals ask whether the model missed a pattern}
+Plot residuals against fitted values and against each predictor.
+A random-looking horizontal cloud is compatible with the mean/variance
+assumptions; curvature suggests a missing nonlinear term, and a funnel
+suggests nonconstant variance. Plot residuals against time or observation
+order to look for dependence. A normal Q--Q plot compares ordered residuals
+to normal quantiles; systematic departures or extreme tails challenge
+normal-error inference. No diagnostic plot proves assumptions true.
+
+An outlier has an unusual response relative to the model. A high-leverage
+point has unusual predictor values. In simple regression its leverage is
+\[
+h_{ii}=\frac1n+\frac{(x_i-\bar x)^2}{S_{xx}},\qquad
+\operatorname{Var}(e_i)=\sigma^2(1-h_{ii}).
+\]
+Thus residuals do not have identical variances even under a correct
+equal-error-variance model. An internally standardized residual is
+$r_i=e_i/[s\sqrt{1-h_{ii}}]$. A point is influential if removing it changes
+the fitted model substantially. Cook's distance, for two fitted coefficients,
+is
+\[
+D_i=\frac{e_i^2}{2s^2}\frac{h_{ii}}{(1-h_{ii})^2}.
+\]
+Large diagnostic values invite inspection of data quality and model
+sensitivity. Do not remove points solely to achieve a desired p-value.
+
+If curvature is substantive, consider a transformed predictor or response,
+or a nonlinear mean function. If variance changes, weighted least squares
+or heteroskedasticity-robust SEs may be appropriate. If observations are
+dependent, use a model or variance estimator that respects the dependence.
+These are extensions beyond the simple-regression core, not automatic fixes.
+
+\subsection{Mean-response intervals versus prediction intervals}
+At a predictor value $x_0$, the fitted mean is
+$\hat y_0=\hat\beta_0+\hat\beta_1x_0$.
+A normal-model confidence interval for the \emph{mean response} uses
+\[
+\hat y_0\pm t_{1-\alpha/2,n-2}s
+\sqrt{\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}}.
+\]
+A prediction interval for one independent future response uses
+\[
+\hat y_0\pm t_{1-\alpha/2,n-2}s
+\sqrt{1+\frac1n+\frac{(x_0-\bar x)^2}{S_{xx}}}.
+\]
+The extra 1 accounts for new observation noise, which remains even if the
+mean line were known. Both intervals widen away from $\bar x$.
+Extrapolation outside the sampled range additionally risks failure of the
+model form; the displayed interval does not quantify that risk.
+
+\textbf{Continue Unit 9's example.} At $x_0=3$, $\hat y_0=4$ and
+$s=\sqrt{0.8}$. The mean-response SE is $\sqrt{0.8/5}=0.4$, so its
+95\% interval is $4\pm3.18245(0.4)\approx[2.727,5.273]$.
+The prediction SE is $\sqrt{0.8(1+1/5)}=\sqrt{0.96}\approx0.97980$,
+giving $4\pm3.18245(0.97980)\approx[0.882,7.118]$.
+The data are few; the wide intervals honestly reflect that.
+
+\subsection{Validation measures performance on unseen data}
+Training error is typically optimistic because fitting explicitly optimizes
+performance on those observations. Separate fitting from evaluation.
+Use a training set for fitting, a validation set or cross-validation for
+choices, and a held-out test set for a final assessment when data permit.
+For predictions $\hat y_i$ on held-out data,
+\[
+MAE=\frac1m\sum_i|y_i-\hat y_i|,\qquad
+RMSE=\sqrt{\frac1m\sum_i(y_i-\hat y_i)^2}.
+\]
+RMSE penalizes large errors more strongly. Compare with a simple baseline,
+such as a constant prediction fitted only on training data. Report units,
+sample size and the data-splitting method. Test-set $R^2$ can be negative
+if the model is worse than the reference mean used in its definition.
+
+In $K$-fold cross-validation, split into $K$ folds, repeatedly fit on $K-1$
+and evaluate on the remaining fold, then aggregate errors. All data-dependent
+preprocessing, including scaling, feature selection and imputation, must
+be learned within each training fold. Doing it once before splitting leaks
+information. Keep grouped observations together; use forward-time splits
+when predicting the future. Ordinary random folds can otherwise leak
+subject or time information.
+
+Model complexity trades bias against variance. An overly rigid model may
+miss real structure; an overly flexible model may fit noise. Validation
+helps choose useful complexity, but repeatedly tuning to the same test set
+turns it into another validation set. Correlation is symmetric, while
+regression predicts a particular response from specified predictors. Neither
+alone turns observational data into causal evidence.
+
+\clearpage
+\section{A practical decision guide}
+Start by identifying the scientific question, data type, sampling design,
+target parameter and assumptions. Only then select a formula.
+\begin{enumerate}
+\item \textbf{Probability of an event:} draw its sample space; use counting
+only for equally likely outcomes. For given evidence, condition; for a
+mixture of cases, use total probability or Bayes.
+\item \textbf{A count:} fixed independent trials suggest binomial; events
+in an exposure suggest Poisson; sampling without replacement suggests
+hypergeometric. State why the model fits the experiment.
+\item \textbf{A measurement or wait:} consider normal, uniform or
+exponential only when shape/support/process assumptions are appropriate.
+\item \textbf{One mean:} known SD gives $z$; unknown SD gives $t$, with
+exact normal-model inference or a suitable large-sample approximation.
+\item \textbf{Two means:} matched observations require a paired analysis.
+Independent groups generally use Welch; pooling needs equal-variance support.
+\item \textbf{A proportion:} use a binomial model; Wilson intervals often
+behave better than Wald. For tests, use the null-based SE or an exact method.
+\item \textbf{A variance:} chi-square inference requires normal data;
+variance ratios use $F$ for independent normal samples.
+\item \textbf{Categorical association:} use a contingency table and assess
+expected counts before a chi-square approximation.
+\item \textbf{A numerical response versus a predictor:} fit regression,
+inspect residuals and distinguish mean uncertainty from prediction noise.
+\end{enumerate}
+
+\textbf{Write a complete solution in five sentences.} (1) State the target
+and model. (2) State the relevant assumptions. (3) Show the formula and
+substituted values. (4) Report the numerical result with units and sensible
+rounding. (5) Interpret it in the original context, including its limits.
+
+\subsection*{Common errors to catch before submitting}
+Do not multiply probabilities without a reason for independence. Do not
+confuse mutually exclusive with independent. A PDF value is not a point
+probability. Standard deviation is not standard error. A 95\% confidence
+interval is not an interval containing 95\% of the observations. A p-value
+is not the probability the null is true. ``Not significant'' does not mean
+``no effect''. $R^2$ does not prove causation. Paired data are not two
+independent samples. A large sample does not remove bias. Check supports,
+units, tail directions, and whether the second normal parameter is variance
+or standard deviation.
+
+\clearpage
+\section{Practice problems}
+Try these before reading the solutions. All data below are invented for
+practice; when a normal model is requested, treat its assumptions as given.
+\begin{enumerate}
+\item For $1,2,3,4,10$, find the mean, median and sample variance. Explain
+which location measure better resists the last observation.
+\item Draw 2 items without replacement from 8, of which 3 are defective.
+Find the probability exactly one is defective.
+\item Machines A and B produce 60\% and 40\% of items, with defect rates
+1\% and 3\%. Given a defective item, find the probability it came from B.
+\item A density is $f(x)=cx^2$ on $(0,1)$. Find $c$, the CDF there, the mean
+and the variance.
+\item A joint PMF on $(0,0),(0,1),(1,0),(1,1)$ is respectively
+$0.2,0.3,0.1,0.4$. Find the two means, covariance and $P(X=1\mid Y=1)$.
+Are the variables independent?
+\item Independent $X,Y$ have means 2, 5 and variances 3, 4. Find the mean
+and variance of $2X-Y+1$.
+\item If $X\sim\operatorname{Bin}(8,0.25)$, find $E[X]$, its variance and
+$P(X=0)$. If $Y\sim\operatorname{Pois}(2)$, find $P(Y\geq1)$.
+\item An exponential wait has mean 4 minutes. Find its rate and
+$P(X>6\mid X>2)$.
+\item Measurements are i.i.d. $N(20,9)$. For $n=36$, find
+$P(\bar X>21)$ exactly in terms of $\Phi$ and approximately numerically.
+\item In 40 Bernoulli trials there are 14 successes. Derive the MLE of $p$.
+For exponential observations $1,2,3$, find the MLE rate.
+\item With normal data $n=9,\bar x=10,s=3$, find a 95\% interval for the mean.
+Use $t_{0.975,8}=2.306$.
+\item With normal data $n=16,\bar x=7,s=2$, test $\mu=6$ against $\mu\ne6$
+at 5\%. Use $t_{0.975,15}=2.131$.
+\item Five independent paired differences are $1,2,1,3,3$. Compute the
+one-sample $t$ statistic for a zero mean difference and its degrees of freedom.
+\item A $2\times2$ table has rows $(40,10)$ and $(30,20)$. Find expected
+counts, the Pearson statistic and its degrees of freedom.
+\item For the Unit 9 regression data, predict at $x=4$ and state whether
+this is interpolation or extrapolation. Why is a prediction interval wider
+than a confidence interval for the mean at that point?
+\item A model scores very well on training data but poorly on a held-out
+sample. Give two plausible explanations and one validation improvement.
+\end{enumerate}
+
+\clearpage
+\section{Worked solutions to practice}
+\begin{enumerate}
+\item $\bar x=4$, median $=3$; squared deviations sum to
+$9+4+1+0+36=50$, so $s^2=50/4=12.5$. The median is more resistant;
+the last observation substantially raises the mean.
+\item Choose one from each group: $\binom31\binom51/\binom82=15/28$.
+The draws are dependent, which the combination calculation handles.
+\item $P(D)=0.6(0.01)+0.4(0.03)=0.018$.
+Bayes gives $P(B\mid D)=0.012/0.018=2/3$.
+\item $c/3=1$, so $c=3$ and $F(x)=x^3$ on $(0,1)$.
+$E[X]=3/4$, $E[X^2]=3/5$, hence variance $3/5-9/16=3/80$.
+\item $E[X]=0.5$, $E[Y]=0.7$, $E[XY]=0.4$; covariance is
+$0.4-0.5(0.7)=0.05$. Also $P(X=1\mid Y=1)=0.4/0.7=4/7$.
+Not independent, since $P(X=1,Y=1)=0.4\ne0.35$.
+\item Mean $=2(2)-5+1=0$. Independence gives variance
+$2^2(3)+(-1)^2(4)=16$. The constant contributes no variance.
+\item Binomial mean $=2$, variance $=8(0.25)(0.75)=1.5$, and
+$P(X=0)=0.75^8\approx0.10011$. Poisson probability
+$P(Y\geq1)=1-e^{-2}\approx0.86466$.
+\item Rate $\lambda=1/4$ per minute. Conditional survival is
+$e^{-(6-2)/4}=e^{-1}\approx0.36788$. Memorylessness concerns the remaining wait.
+\item Population SD is 3, not 9. SE $=3/6=0.5$; the probability is
+$1-\Phi((21-20)/0.5)=1-\Phi(2)\approx0.02275$.
+\item $\ell(p)=14\log p+26\log(1-p)$; its derivative vanishes at
+$p=14/40=0.35$, with negative second derivative. The exponential MLE is
+$3/(1+2+3)=0.5$ per time unit.
+\item SE $=3/3=1$, so $10\pm2.306=[7.694,12.306]$.
+This is an interval for the population mean under the normal sampling model.
+\item $t=(7-6)/(2/4)=2$, $df=15$. Since $|2|<2.131$, fail to reject.
+The matching interval $7\pm2.131(0.5)$ contains 6.
+\item $\bar d=2$ and $s_d^2=(1+0+1+1+1)/4=1$.
+Thus $t=2/(1/\sqrt5)=2\sqrt5\approx4.4721$, $df=4$.
+The use of differences preserves the paired design.
+\item Column totals are 70 and 30, and row totals 50 each. Expected rows
+are $(35,15)$ and $(35,15)$. Thus
+$X^2=2(25/35+25/15)=100/21\approx4.7619$, $df=1$.
+The upper-tail p-value is approximately 0.0291, without continuity correction.
+\item $\hat y=2.2+0.6(4)=4.6$. It is interpolation within $[1,5]$.
+The prediction interval includes future observation noise in addition to
+uncertainty in the estimated conditional mean.
+\item Possible causes include overfitting, distribution shift, and an
+unrepresentative training sample. Use leakage-free cross-validation for
+model choices and retain an untouched test set. If time or subjects create
+dependence, split by time or subject rather than individual rows.
+\end{enumerate}
+
+\clearpage
+\section{Course coverage and further study}
+\begin{longtable}{p{.13\textwidth}p{.74\textwidth}}
+\toprule
+Sequence & Coverage in this companion\\\midrule
+Week 1 & Unit 1: sampling, location, variability, data types,
+graphs, sample spaces, events, equally likely outcomes.\\
+Week 2 & Unit 2: conditional probability, independence, total probability,
+Bayes' rule.\\
+Week 3 & Unit 3: discrete and continuous random variables, joint,
+marginal and conditional distributions.\\
+Week 4 & Unit 4: expectation, variance, covariance, Chebyshev,
+Bernoulli, binomial and Poisson.\\
+Week 5 & Unit 5: uniform, exponential, normal, law of large numbers.\\
+Week 6 & Unit 6: sample mean, CLT, sample variance, Student's $t$.\\
+Week 7 & Unit 7: point estimation, MLE, mean and proportion intervals.\\
+Week 8 & Unit 8: significance, errors, p-values, one- and two-mean tests.\\
+Week 9 & Unit 9: least squares, fitted line, properties and coefficient inference.\\
+Week 10 & Unit 10: residuals, checking, prediction, correlation, validation.\\
+Extensions & Units 6--8: chi-square and $F$, variance inference,
+chi-square independence testing.\\\bottomrule
+\end{longtable}
+
+\subsection*{Further reading}
+The following textbooks offer additional explanations and exercises.
+This companion does not reproduce their text or worked solutions.
+\begin{enumerate}
+\item Walpole, Myers, Myers, Ye. \emph{Probability and Statistics for Engineers
+and Scientists}, 9th edition, Pearson.
+\item Sheldon Ross. \emph{Introduction to Probability and Statistics for
+Engineers and Scientists}, 5th edition, Elsevier.
+\item Sheldon Ross. \emph{A First Course in Probability}, 10th edition,
+Pearson.
+\end{enumerate}
+
+\textbf{Suggested ten-session revision cycle.} In each session, study the
+matching unit, reproduce at least one derivation, solve an example without
+looking, and explain the assumptions aloud. After Unit 5, revisit probability
+and distribution selection. After Unit 10, mix the practice questions so
+that choosing the method becomes part of the exercise. Revisit a mistake
+until you can explain why the incorrect approach was tempting and why it fails.
+
+\textbf{Study boundary.} This companion explains mathematics, not the
+assessment requirements of a particular institution. Confirm course
+requirements and examination logistics with your instructor.

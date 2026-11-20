@@ -1,0 +1,50 @@
+InkMath 1.0 — Personal Windows LaTeX notebook
+
+Launch InkMath.exe from its folder. Keep the other files beside it.
+No account or subscription is required. Notes are stored on this computer.
+
+WORKFLOW
+1. Select a notebook or create a new one.
+2. Write LaTeX in the left editor. Body-only LaTeX is easiest.
+3. Choose handwriting, paper and ink.
+4. Build preview (Ctrl+Enter). The first build can take longer.
+5. Export PDF, or export a complete .tex document for another editor.
+6. Back up your library regularly with the sidebar button.
+
+DOCUMENT SUPPORT
+Real XeLaTeX compilation through the bundled Tectonic engine.
+Body documents include amsmath, amssymb, Euler math fonts, fontspec,
+geometry, xcolor, eso-pic, booktabs, array, longtable and hyperref.
+Full documents containing \documentclass are accepted. Existing package
+choices may conflict with the notebook style; use a XeLaTeX-compatible
+preamble. For multi-file projects, inline the content first. This version
+does not copy companion images, bibliographies or relative \input files.
+Custom class files and unusual TeX workflows may need a full TeX editor.
+
+PRIVACY AND CONNECTIVITY
+Compilation happens locally. Tectonic may download missing public TeX
+packages; it does not upload your document for conversion. Once required
+packages are cached, those documents compile offline. Default fonts are
+Windows system fonts. The app contains no AI/OCR or analytics service.
+The compiler runs in its untrusted-input mode, with shell escape disabled.
+Library JSON is stored under the application's Windows user-data folder.
+Export .inkmath backups to preserve notes or move them to another machine.
+Importing a backup adds its notes to your existing library.
+
+HANDWRITING
+Segoe Print and Comic Sans simulate handwritten text. Euler supplies
+hand-drawn-style mathematical letters. This is a consistent font-based
+style, not a unique personal handwriting model. Georgia is a formal option.
+
+TROUBLESHOOTING
+The error panel retains compiler output. Check the first error and the
+reported source line. For body-only notes, line numbers include the generated
+preamble; exporting the .tex file shows the full numbered source.
+If a download fails, reconnect and build again. Cancel stops a running build.
+A changed document must be rebuilt before exporting a current PDF.
+The app is an unsigned personal build; Windows may show a publisher notice.
+
+THE COURSE
+The included English Probability and Statistics companion covers ten units,
+from descriptive statistics to inference and regression.
+It is original study material, not official lecture notes.

@@ -1,0 +1,51 @@
+{
+  "name": "inkmath-notes",
+  "version": "1.0.0",
+  "description": "A quiet Windows notebook for LaTeX, handwritten pages and PDF annotations.",
+  "main": "main.cjs",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "setup": "node scripts/setup.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests.cjs",
+    "test:compile": "node scripts/test-compile.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "package": "node scripts/package.mjs",
+    "screenshots": "electron scripts/screenshots.cjs"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^45.4.1",
+    "prettier": "^3.10.1"
+  },
+  "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
+    "katex": "^0.19.1",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.5.438"
+  },
+  "license": "MIT",
+  "author": "Smrbruh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Smrbruh/InkMath.git"
+  },
+  "homepage": "https://github.com/Smrbruh/InkMath#readme",
+  "bugs": {
+    "url": "https://github.com/Smrbruh/InkMath/issues"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "keywords": [
+    "latex",
+    "notes",
+    "handwriting",
+    "windows",
+    "electron",
+    "pdf",
+    "mathematics"
+  ]
+}

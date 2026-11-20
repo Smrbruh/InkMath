@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
+  <title id="title">InkMath — Paper Studio</title>
+  <desc id="desc">A quiet Windows notebook. From LaTeX to a page that feels like yours.</desc>
+  <defs>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#596c9e" stroke-opacity=".09"/></pattern>
+    <linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fffefa"/><stop offset="1" stop-color="#f0eee7"/></linearGradient>
+  </defs>
+  <rect width="1280" height="420" rx="24" fill="#f4f3ee"/>
+  <rect x="750" width="530" height="420" fill="url(#grid)"/>
+  <rect x="66" y="60" width="48" height="54" rx="11" fill="#596c9e"/>
+  <path d="M80 72h20M80 83h16M80 94h11" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <text x="133" y="95" fill="#596c9e" font-family="Segoe UI,Arial,sans-serif" font-size="18" font-weight="600" letter-spacing="4">PAPER STUDIO</text>
+  <text x="62" y="209" fill="#292d35" font-family="Segoe UI,Arial,sans-serif" font-size="88" font-weight="700" letter-spacing="-4">InkMath</text>
+  <text x="68" y="260" fill="#5f646d" font-family="Segoe UI,Arial,sans-serif" font-size="25">From LaTeX to a page that feels like yours.</text>
+  <text x="68" y="347" fill="#596c9e" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="600" letter-spacing="2">WRITE  /  ANNOTATE  /  KEEP</text>
+  <g transform="translate(856 39) rotate(7 145 165)">
+    <rect x="9" y="12" width="290" height="338" rx="8" fill="#292d35" opacity=".08"/>
+    <rect width="290" height="338" rx="8" fill="url(#paper)" stroke="#deded8"/>
+    <path d="M30 70h230M30 112h230M30 154h230M30 196h230M30 238h230M30 280h230" stroke="#dce1ec"/>
+    <text x="31" y="53" font-family="Segoe Print,Georgia,serif" font-size="19" fill="#596c9e">A little probability</text>
+    <text x="34" y="141" font-family="Georgia,serif" font-style="italic" font-size="27" fill="#405886">P(A | B) =</text>
+    <text x="162" y="125" font-family="Georgia,serif" font-style="italic" font-size="20" fill="#405886">P(A ∩ B)</text>
+    <path d="M159 134h97" stroke="#405886" stroke-width="1.5"/>
+    <text x="184" y="158" font-family="Georgia,serif" font-style="italic" font-size="20" fill="#405886">P(B)</text>
+    <path d="M30 213q86 -12 192 -2" fill="none" stroke="#e8ce76" stroke-width="16" opacity=".5"/>
+    <text x="33" y="218" font-family="Segoe Print,Georgia,serif" font-size="16" fill="#405886">Make the idea your own.</text>
+    <path d="M37 264q34 35 83 -1t104 9" fill="none" stroke="#596c9e" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+</svg>
